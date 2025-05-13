@@ -12,7 +12,7 @@ const ListItem = ({ note }) => {
 
   const getContent = (note) => {
     let title = getTitle(note);
-    let content = note.body.replaceAll('\n', '').replaceAll(title, "");
+    let content = note.body.replaceAll('\n', ' ').replaceAll(title, "");
     return content.slice(0, 30);
   }
 
