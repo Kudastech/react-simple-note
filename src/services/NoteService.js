@@ -37,5 +37,7 @@ class NoteService {
       });
     }
   }
-  
-export default new NoteService();
+
+const noteServiceInstance = new NoteService();
+
+export default noteServiceInstance;
