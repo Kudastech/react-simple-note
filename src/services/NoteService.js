@@ -4,24 +4,22 @@ class NoteService {
 
     async getNotes(){
       const response = await api(`/notes`);
-      const data = await response.json();
-      return data;
+      return response;
     }
 
     async getNote(noteId) {
       const response = await api(`/notes/${noteId}`);
-      const data = await response.json();
-      return data;
+      return response;
     }
     
     async createNote(note) {
       const response = await api(`/notes/`, "POST", note);
-      return await response.json();
+      return response;
     }
   
     async updateNote(noteId, note) {
       const response = await api(`/notes/${noteId}`, "PUT", note);
-      return await response.json();
+      return response;
     }
   
     async deleteNote(noteId) {

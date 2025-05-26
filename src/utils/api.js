@@ -21,5 +21,5 @@ export async function api(endpoint, method = 'GET', payload){
     }
 
     const response = await fetch(url, config);
-    return response;
+    return await response.json();
 }
