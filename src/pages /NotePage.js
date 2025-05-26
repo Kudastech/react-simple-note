@@ -6,7 +6,8 @@ import NoteService from "../services/NoteService";
 const NotePage = () => {
   const { noteId } = useParams();
   const navigate = useNavigate();
-  let [note, setNote] = useState(null);
+  const [note, setNote] = useState(null);
+
   useEffect(() => { 
     noteId !== 'new' ? getNotes() : setNote({ body: "" }); 
   }, [noteId]);
@@ -19,14 +20,14 @@ const NotePage = () => {
   const handleSubmit = async () => {
     if (noteId === 'new') {
       if (note.body) {
-        await NoteService.createNote(note);
+        await NoteService.createNote({...note, updated: new Date()});
       }
     } else {
       if (! note.body) {
         await NoteService.deleteNote(noteId);
         return;
       } else {
-        await NoteService.updateNote(noteId, note);
+        await NoteService.updateNote(noteId, {...note, updated: new Date()});
       }
     }
     navigate("/");

@@ -1,43 +1,33 @@
+import { api } from "../utils/api";
 
 class NoteService {
-    constructor(baseUrl = 'http://localhost:8001') {
-        this.baseUrl = baseUrl;
+
+    async getNotes(){
+      const response = await api(`/notes`);
+      const data = await response.json();
+      return data;
     }
-  
+
     async getNote(noteId) {
-      const response = await fetch(`${this.baseUrl}/notes/${noteId}`);
-      return await response.json();
+      const response = await api(`/notes/${noteId}`);
+      const data = await response.json();
+      return data;
     }
     
     async createNote(note) {
-      const response = await fetch(`${this.baseUrl}/notes/`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ ...note, updated: new Date() }),
-      });
+      const response = await api(`/notes/`, "POST", note);
       return await response.json();
     }
   
     async updateNote(noteId, note) {
-      const response = await fetch(`${this.baseUrl}/notes/${noteId}`, {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ ...note, updated: new Date() }),
-      });
+      const response = await api(`/notes/${noteId}`, "PUT", note);
       return await response.json();
     }
   
     async deleteNote(noteId) {
-      await fetch(`${this.baseUrl}/notes/${noteId}`, {
-        method: "DELETE",
-      });
+      await api(`/notes/${noteId}`, "DELETE");
     }
   }
 
-const noteServiceInstance = new NoteService();
 
-export default noteServiceInstance;
+export default new NoteService();
