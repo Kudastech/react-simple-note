@@ -1,30 +1,46 @@
 import { useEffect, useState } from "react"
 import ListItem from "../components/ListItem"
 import AddButton from "../components/AddButton"
+import NoteService from "../services/NoteService"
 
 const NoteListPage = () => {
-    let [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState([]);
+    const [processing, setProcessing] = useState(true);
     
     useEffect(() => {
         getNotes()
     }, [])
 
     const getNotes = async () => {
-        let response = await fetch('http://localhost:8001/notes')
-        let data = await response.json()
-        setNotes(data)
+        try {
+            const data = await NoteService.getNotes();
+            setNotes(data);
+        } catch (error) {
+            console.error("Error fetching notes:", error);
+        } finally {
+            setProcessing(false);
+        }
     }
+
+    if (processing) {
+        return <div>Loading...</div>;
+    }
+
   return (
       <div className="notes">
           <div className="notes-header">
               <h2 className="notes-title">&#9782; Notes</h2>
               <p className="notes-count">{ notes.length}</p>
           </div>
-        <div className="note-list">
-            {notes.map((note, index) => (
-                <ListItem key={index} note={note} />
-            ))}
-          </div>
+            <div className="note-list">
+                {notes.length ? (
+                    notes.map((note, index) => (
+                        <ListItem key={index} note={note} />
+                    ))
+                ) : (
+                    <h2>Your Note is Empty</h2>
+                )}
+            </div>
           <AddButton/>
       </div>
   )
